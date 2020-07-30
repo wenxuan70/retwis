@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Retwis</title>
+    <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css">
+</head>
+<body th:style="'background-image: url(/image/background.png);'">
+<div id="page">
+    <div id="header">
+        <a th:href="@{/}"><img style="border:none" th:src="@{/image/logo.png}" width="192" height="85" alt="Retwis"></a>
+        <div id="navbar">
+            <a th:href="@{/}">home</a>
+            | <a th:href="@{/timeline}">timeline</a>
+            <a th:if="${#session.getAttribute('user')!=null}" th:href="@{/logout}">&nbsp;|&nbsp;logout</a>
+        </div>
+    </div>
+    <h2 th:text="${userP.username}" class="username"></h2>
+    <form method="post">
+        <a th:if="${followed}" th:href="@{'/stopFollowing/' + ${userP.username}}" class="button">Stop following</a>
+        <a th:if="${!followed}" th:href="@{'/follow/' + ${userP.username}}" class="button">Follow this user</a>
+        <span th:if="${errorMsg != null}" th:text="${errorMsg}" style="color: red;"></span>
+    </form>
+    <div class="post" th:each="post : ${posts}">
+        <a class="username" th:href="${'/profile/' + post.username}" th:text="${post.username}">tom2020</a>
+        <span th:utext="${post.content}">The weather today is good</span>
+        <br>
+        <i th:text="${T(retwis.util.TimeUtils).convertTime(post.publishTime)}"></i>
+    </div>
+    <div th:if="${prev != next}" class="rightlink">
+        <a th:if="${hasPrev}" th:href="@{'/profile/' + ${userP.username + '?page=' + prev}}">&laquo; Newer posts</a>
+        <span th:if="${hasPrev && hasPrev == morePosts}">|</span>
+        <a th:if="${morePosts}" th:href="@{'/profile/' + ${userP.username + '?page=' + next}}">Older posts &raquo;</a>
+    </div>
+    <div id="footer">Redis is a very simple Twitter clone written in Java as example application of the <a
+            href="http://redis.io">Redis database</a></div>
+</div>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Retwis</title>
+    <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css">
+</head>
+<body th:style="'background-image: url(/image/background.png);'">
+<div id="page">
+    <div id="header">
+        <a th:href="@{/}"><img style="border:none" th:src="@{/image/logo.png}" width="192" height="85" alt="Retwis"></a>
+        <div id="navbar">
+            <a th:href="@{/}">
+                home
+            </a>
+            | <a th:href="@{/timeline}">timeline</a>
+            | <a th:if="${#session.getAttribute('user')!=null}" th:href="@{/logout}">logout</a>
+        </div>
+    </div>
+    <h2>Timeline</h2>
+    <i>Latest registered users (an example of sorted sets)</i><br>
+    <div>
+        <a th:each="user : ${users}" th:text="${user.username}" class="username"
+           th:href="@{'/profile/' + ${user.username}}">algernon</a>
+    </div>
+    <br><i>The latest news from users around the world!</i><br>
+    <div class="post" th:each="post : ${posts}">
+        <a class="username" th:text="${post.username}" th:href="@{'/profile/' + ${post.username}}"></a>
+        <span th:utext="${post.content}"></span>
+        <br>
+        <i th:text="${T(retwis.util.TimeUtils).convertTime(post.publishTime)}"></i>
+    </div>
+    <div th:if="${prev != next}" class="rightlink">
+        <a th:if="${hasPrev}" th:href="@{'/timeline/?page=' + prev}">&laquo; Newer posts</a>
+        <span th:if="${hasPrev && hasPrev == hasMore}">|</span>
+        <a th:if="${hasMore}" th:href="@{'/timeline/?page=' + next}">Older posts &raquo;</a>
+    </div>
+    <div id="footer">Redis is a very simple Twitter clone written in Java as example application of the <a
+            href="http://redis.io">Redis database</a></div>
+</div>
+</body>
+</html>

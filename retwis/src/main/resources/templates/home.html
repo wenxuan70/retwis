@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Retwis</title>
+    <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css">
+</head>
+<body th:style="'background-image: url(/image/background.png);'">
+<div id="page">
+    <div id="header">
+        <a th:href="@{/}"><img style="border:none" th:src="@{/image/logo.png}" width="192" height="85" alt="Retwis"></a>
+        <div id="navbar">
+            <a th:href="@{/}">home</a>
+            | <a th:href="@{/timeline}">timeline</a>
+            | <a th:href="@{/logout}">logout</a>
+        </div>
+    </div>
+    <div id="postform" th:object="${userP}">
+        <form method="POST" th:action="@{/post}">
+            <span id="user" th:text="${userP.username}"></span>, what you are doing?
+            <span th:if="${errorMsg != null}" style="color: red" th:text="${errorMsg}"></span>
+            <br>
+            <table>
+                <tr>
+                    <td>
+                        <textarea style="height: 100px;" id="status" cols="70" rows="3" name="content" th:maxlength="140"
+                                  placeholder="输入的字数不能超过140个"></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right"><input type="submit" name="doit" value="Update"></td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        <i>
+                            Mention someone usage: <code>@</code>+<code>Username</code>+<code>Space</code>
+                        </i>
+                    </td>
+                </tr>
+            </table>
+        </form>
+        <div id="homeinfobox">
+            <span th:text="${userP.follower+ ' followers'}"></span><br>
+            <span th:text="${userP.following + ' following'}"></span><br>
+        </div>
+    </div>
+    <div class="post" th:each="post : ${posts}">
+        <a class="username" th:href="${'/profile/' + post.username}" th:text="${post.username}"></a>
+        <span th:utext="${post.content}">The weather today is good</span>
+        <br>
+        <i th:text="${T(retwis.util.TimeUtils).convertTime(post.publishTime)}"></i>
+    </div>
+    <div th:if="${prev != next}" class="rightlink">
+        <a th:if="${hasPrev}" th:href="@{'/profile/' + ${userP.username + '?page=' + prev}}">&laquo; Newer posts</a>
+        <span th:if="${hasPrev && hasPrev == morePosts}">|</span>
+        <a th:if="${morePosts}" th:href="@{'/profile/' + ${userP.username + '?page=' + next}}">Older posts &raquo;</a>
+    </div>
+    <div id="footer">
+        Redis is a very simple Twitter clone written in Java as example application of the
+        <a href="http://redis.io">Redis database</a>
+    </div>
+</div>
+</body>
+</html>
