@@ -4,12 +4,11 @@
 
 ### 该项目是模仿redis官方的一个demo
 
-由于[官网的demo]()是使用php开发的，于是我采用spring boot重写了该项目后端，前端基本和官网一样
+由于[官网](http://retwis.redis.io)是使用php开发的，于是我采用spring boot重写了该项目后端，前端基本和官网一样
 
 ### 技术
 
 1. SpringBoot
-
 2. Redis
 3. Thymeleaf
 
@@ -18,3 +17,6 @@
 1. InteliJ IDEA
 2. Maven
 3. JDK8
+
+### 参考文档
+> [官方文档](https://redis.io/topics/twitter-clone)
